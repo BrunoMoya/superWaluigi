@@ -24,6 +24,8 @@ var PreloaderScene = {
     // TODO: load here the assets for the game
     this.game.load.image('waluigi', 'images/whaaaa.png');
     this.game.load.image('ground', 'images/platform.png');
+    this.game.load.image('goomba', 'images/goombat.png');
+    this.game.load.image('wall', 'images/wall.png');
 
   },
 

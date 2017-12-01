@@ -1,6 +1,7 @@
 'use strict';
 
 var waluigi;
+var goomba;
 var platforms;
 var cursors;
 var canJump;
@@ -27,15 +28,27 @@ var PlayScene = {
 
    ledge.body.immovable = true;
 
+   var wall = platforms.create(-10, 300, 'wall');
+
+   wall.body.immovable = true;
+
     waluigi = this.game.add.sprite(
-    this.game.world.centerX, this.game.world.centerY, 'waluigi');
+      this.game.world.centerX, this.game.world.centerY, 'waluigi');
     waluigi.anchor.setTo(0.5, 0.5);
 
+    goomba = this.game.add.sprite(
+      750, this.game.world.centerY, 'goomba');
+    goomba.anchor.setTo(0.5, 0.5);
+
     this.game.physics.enable(waluigi, Phaser.Physics.ARCADE);
+    this.game.physics.enable(goomba, Phaser.Physics.ARCADE);
 
     waluigi.body.collideWorldBounds = true;
     waluigi.body.gravity.y = 500;
     waluigi.body.bounce.y = 0.2;
+
+    goomba.body.gravity.y = 500;
+    goomba.body.bounce.y = 0.2;
 
     cursors = this.game.input.keyboard.createCursorKeys();
     canJump = true;
@@ -44,15 +57,34 @@ var PlayScene = {
 
   update:  function () {
 
-    var hitPlatform = this.game.physics.arcade.collide(waluigi, platforms);
+    this.game.physics.arcade.collide(waluigi, platforms);
+    this.game.physics.arcade.collide(goomba, platforms, function(goomba, platforms){
+
+      if(goomba.body.touching.right && goomba.body.touching.down)
+        goomba.scale.x = 1;
+
+      if(goomba.body.touching.left && goomba.body.touching.down)
+        goomba.scale.x = -1;
+    }, null, this);
+
+      goomba.body.velocity.x = -100 * goomba.scale.x;
+
+    this.game.physics.arcade.collide(waluigi, goomba, function(waluigi, enemy){
+
+      if(goomba.body.touching.up && waluigi.body.touching.down){
+            goomba.kill();
+        }
+        else  this.game.state.start('play');
+      }, null, this);
+
     if(waluigi.body.touching.down) canJump = true;
 
-    if (cursors.left.isDown){
+    if (cursors.left.isDown && waluigi.body.velocity.x > -100){
       if(waluigi.body.velocity.x > 0)
         waluigi.body.velocity.x /= 1.1;
       waluigi.body.velocity.x -= 10;
     }
-    else if (cursors.right.isDown){
+    else if (cursors.right.isDown && waluigi.body.velocity.x < 100){
       if(waluigi.body.velocity.x < 0)
         waluigi.body.velocity.x /= 1.1;
       waluigi.body.velocity.x += 10;
