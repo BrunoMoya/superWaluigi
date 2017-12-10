@@ -32,43 +32,42 @@ var PlayScene = {
 
    wall.body.immovable = true;
 
-    waluigi = this.game.add.sprite(
-      this.game.world.centerX, this.game.world.centerY, 'waluigi');
-    waluigi.anchor.setTo(0.5, 0.5);
-
+    waluigi = new Waluigi(this.game, this.game.world.centerX, this.game.world.CenterY, 'waluigi');
+    this.game.add.existing(waluigi);
+/*
     goomba = this.game.add.sprite(
       750, this.game.world.centerY, 'goomba');
     goomba.anchor.setTo(0.5, 0.5);
-
+*/
     this.game.physics.enable(waluigi, Phaser.Physics.ARCADE);
-    this.game.physics.enable(goomba, Phaser.Physics.ARCADE);
+  //  this.game.physics.enable(goomba, Phaser.Physics.ARCADE);
 
     waluigi.body.collideWorldBounds = true;
     waluigi.body.gravity.y = 500;
     waluigi.body.bounce.y = 0.2;
 
-    goomba.body.gravity.y = 500;
-    goomba.body.bounce.y = 0.2;
+  //  goomba.body.gravity.y = 500;
+  //goomba.body.bounce.y = 0.2;
 
     cursors = this.game.input.keyboard.createCursorKeys();
-    canJump = true;
 
   },
 
   update:  function () {
 
     this.game.physics.arcade.collide(waluigi, platforms);
-    this.game.physics.arcade.collide(goomba, platforms, function(goomba, platforms){
+    waluigi.input(cursors);
+  //  this.game.physics.arcade.collide(goomba, platforms, function(goomba, platforms){
 
-      if(goomba.body.touching.right && goomba.body.touching.down)
-        goomba.scale.x = 1;
+  //    if(goomba.body.touching.right && goomba.body.touching.down)
+  //      goomba.scale.x = 1;
 
-      if(goomba.body.touching.left && goomba.body.touching.down)
-        goomba.scale.x = -1;
-    }, null, this);
+  //    if(goomba.body.touching.left && goomba.body.touching.down)
+  //      goomba.scale.x = -1;
+  //  }, null, this);
 
-      goomba.body.velocity.x = -100 * goomba.scale.x;
-
+  //    goomba.body.velocity.x = -100 * goomba.scale.x;
+/*
     this.game.physics.arcade.collide(waluigi, goomba, function(waluigi, enemy){
 
       if(goomba.body.touching.up && waluigi.body.touching.down){
@@ -76,9 +75,9 @@ var PlayScene = {
         }
         else  this.game.state.start('play');
       }, null, this);
-
-    if(waluigi.body.touching.down) canJump = true;
-
+*/
+    if(waluigi.body.touching.down) waluigi.grounded();
+/*
     if (cursors.left.isDown && waluigi.body.velocity.x > -100){
       if(waluigi.body.velocity.x > 0)
         waluigi.body.velocity.x /= 1.1;
@@ -96,6 +95,7 @@ var PlayScene = {
       if(waluigi.body.velocity.y < -300) canJump = false;
       waluigi.body.velocity.y -= 20;
     }
+    */
   },
 
  render: function () {
