@@ -46,7 +46,7 @@ var PlayScene = {
     waluigi.body.bounce.y = 0.2;
 
     for (var i = 0; i < 4; i++) {
-      var goomba = new Goomba(this.game, this.game.world.centerX + i*100, this.game.world.CenterY, 'goomba');
+      var goomba = new Goomba(this.game, this.game.world.centerX + i*100, this.game.world.CenterY, 10, 0, 'goomba');
       goombas.add(goomba);
       this.game.physics.enable(goomba, Phaser.Physics.ARCADE);
       goomba.body.gravity.y = 500;

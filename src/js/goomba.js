@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
+//var Dinamico = require('./dinamico.js');
 
-var Goomba = function (game, x, y, name)
+var Goomba = function (game, x, y, velX, velY, name)
 {
-  Phaser.Sprite.call(this, game, x, y, name);
-  this.anchor.setTo(0.5, 0.5);
-
-  this.velocity = -100;
+  Dinamico.call(this, game, x, y, velX, velY, name);
 }
 
-Goomba.prototype = Object.create(Phaser.Sprite.prototype);
+Goomba.prototype = Object.create(Dinamico.prototype);
 Goomba.prototype.constructor = Goomba;
 
-Goomba.prototype.update = function(){
-  this.body.velocity.x = this.velocity * this.scale.x;
-}
+Goomba.prototype.update = function()
+{
+  Dinamico.prototype.update.call(this);
+};

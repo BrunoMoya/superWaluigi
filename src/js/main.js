@@ -6,6 +6,7 @@ var PlayScene = require('./play_scene.js');
 var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
+    this.game.time.advancedTiming = true;
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
   },
 
