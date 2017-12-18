@@ -15,7 +15,7 @@ Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
 Waluigi.prototype.constructor = Waluigi;
 
 Waluigi.prototype.update = function () {
-
+  
   if (this.cursors.left.isDown ){
     this.body.velocity.x = -150;
     this.animations.play('walkLeft');
@@ -28,16 +28,21 @@ Waluigi.prototype.update = function () {
   }
   else {
     if(this.body.velocity.x > 0)     //derrape derecha
-      this.body.velocity.x -= 5;
+      this.body.velocity.x -= 10;
     else if(this.body.velocity.x < 0)//derrape izq
-      this.body.velocity.x += 5;
+      this.body.velocity.x += 10;
     else{}                           //this.body.velocity.x == 0
     this.animations.stop();
     if(this.goesRight) this.frame = 0;
     else this.frame = 6;
   }
+  if(this.cursors.up.isDown && this.body.onFloor()){
+    this.body.velocity.y = -250;
+    this.animations.stop();
+  }
+  
+  if(this.body.velocity.y != 0){
+    if(this.goesRight) this.frame = 5;
+    else this.frame = 11;
+  }
 };
-
-Waluigi.prototype.grounded = function (){
-  this.canJump = true;
-}

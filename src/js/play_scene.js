@@ -22,6 +22,7 @@ var PlayScene = {
     this.map.addTilesetImage('super_mario','super_mario');//
 
     this.cielo = this.map.createLayer(0);
+    //this.cielo.fixedToCamera = true;
     
     this.suelo = this.map.createLayer(1);
     //this.suelo.debug = true;
@@ -44,11 +45,12 @@ var PlayScene = {
     waluigi.animations.add('walkRight', [0, 1, 2, 3, 4], 10, true);
     waluigi.animations.add('walkLeft', [6, 7, 8, 9, 10], 10, true);
     waluigi.animations.add('entrando',[12, 13, 14,15,16],4,true);
-    waluigi.body.gravity.y = 500;
-    waluigi.body.bounce.y = 0.2;
+    waluigi.body.gravity.y = 370;
     waluigi.goesRight =true;
+    waluigi.scale.setTo(0.5);
 
     this.game.camera.follow(waluigi);
+    this.game.camera.view
   },
 
   update:  function () {
