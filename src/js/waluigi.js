@@ -16,22 +16,25 @@ Waluigi.prototype.constructor = Waluigi;
 
 Waluigi.prototype.update = function () {
 
-  if (this.cursors.left.isDown && this.body.velocity.x > -100){
-    if(this.body.velocity.x > 0)
-      this.body.velocity.x /= 1.1;
-    this.body.velocity.x -= 10;
+  if (this.cursors.left.isDown ){
+    this.body.velocity.x = -150;
+    this.animations.play('walkLeft');
+    this.goesRight = false;
   }
-  else if (this.cursors.right.isDown && this.body.velocity.x < 100){
-    if(this.body.velocity.x < 0)
-      this.body.velocity.x /= 1.1;
-    this.body.velocity.x += 10;
+  else if (this.cursors.right.isDown){
+    this.body.velocity.x = 150;
+    this.animations.play('walkRight');
+    this.goesRight = true;
   }
-  else if (!this.cursors.right.isDown && !this.cursors.left.isDown){
-      this.body.velocity.x /= 1.1;
-  }
-  if (this.cursors.up.isDown && this.canJump){
-    if(this.body.velocity.y < -300) this.canJump = false;
-    this.body.velocity.y -= 20;
+  else {
+    if(this.body.velocity.x > 0)     //derrape derecha
+      this.body.velocity.x -= 5;
+    else if(this.body.velocity.x < 0)//derrape izq
+      this.body.velocity.x += 5;
+    else{}                           //this.body.velocity.x == 0
+    this.animations.stop();
+    if(this.goesRight) this.frame = 0;
+    else this.frame = 6;
   }
 };
 
