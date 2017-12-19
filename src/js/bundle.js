@@ -73,9 +73,9 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    game.load.baseURL = 'https://BrunoMoya.github.io/superWaluigi/src';
+    this.game.load.baseURL = 'https://BrunoMoya.github.io/superWaluigi/src';
 
-    game.load.crossOrigin = 'anonymous';
+    this.game.load.crossOrigin = 'anonymous';
 
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
