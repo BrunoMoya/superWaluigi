@@ -1,73 +1,64 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict"
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){'use strict'
 
-function unique_pred(list, compare) {
-  var ptr = 1
-    , len = list.length
-    , a=list[0], b=list[0]
-  for(var i=1; i<len; ++i) {
-    b = a
-    a = list[i]
-    if(compare(a, b)) {
-      if(i === ptr) {
-        ptr++
-        continue
-      }
-      list[ptr++] = a
-    }
-  }
-  list.length = ptr
-  return list
+var Dinamico = function (game, x, y, velX, velY, name)
+{
+  Phaser.Sprite.call(this, game, x, y, name);
+  this.anchor.setTo(0.5, 0.5);
+
+  this.posX = x;
+  this.posY = y;
+  this.velX = velX;
+  this.velY = velY;
 }
 
-function unique_eq(list) {
-  var ptr = 1
-    , len = list.length
-    , a=list[0], b = list[0]
-  for(var i=1; i<len; ++i, b=a) {
-    b = a
-    a = list[i]
-    if(a !== b) {
-      if(i === ptr) {
-        ptr++
-        continue
-      }
-      list[ptr++] = a
-    }
-  }
-  list.length = ptr
-  return list
+Dinamico.prototype = Object.create(Phaser.Sprite.prototype);
+Dinamico.prototype.constructor = Dinamico;
+
+Dinamico.prototype.update = function(){
+  this.body.velocity.x = this.velocity * this.scale.x;
 }
 
-function unique(list, compare, sorted) {
-  if(list.length === 0) {
-    return list
-  }
-  if(compare) {
-    if(!sorted) {
-      list.sort(compare)
-    }
-    return unique_pred(list, compare)
-  }
-  if(!sorted) {
-    list.sort()
-  }
-  return unique_eq(list)
-}
-
-module.exports = unique
+module.exports = Dinamico;
 
 },{}],2:[function(require,module,exports){
 'use strict';
 
+var Estatico = function (game, x, y, name)
+{
+  Phaser.Sprite.call(this, game, x, y, name);
+  this.anchor.setTo(0.5, 0.5);
+  posX = x;
+  posY = y;
+}
+
+Estatico.prototype = Object.create(Phaser.Sprite.prototype);
+Estatico.prototype.constructor = Estatico;
+
+module.exports = Estatico;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var Dinamico = require('./dinamico.js');
+
+var Goomba = function (game, x, y, velX, velY, name, puntos)
+{
+  Dinamico.call(this, game, x, y, velX, velY, name);
+
+  this.puntos = puntos;
+}
+
+Goomba.prototype = Object.create(Dinamico.prototype);
+Goomba.prototype.constructor = Goomba;
+
+module.exports = Goomba;
+
+},{"./dinamico.js":1}],4:[function(require,module,exports){
+'use strict';
+
 var PlayScene = require('./play_scene.js');
-//
-var unique = require('uniq');
 
-var data = [1, 2, 2, 3, 4, 5, 5, 5, 6];
 
-console.log(unique(data));
-//
 var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
@@ -82,14 +73,16 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
+    game.load.baseURL = 'https://BrunoMoya.github.io/superWaluigi/src/js/index.html';
+
+    game.load.crossOrigin = 'anonymous';
+
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
-    //
-    this.game.load.baseURL = 'https://marcolli.github.io/superWaluigi/src/';
-    this.game.load.crossOrigin = 'anonymous';
+
     // TODO: load here the assets for the game
-    this.game.load.tilemap('tilemapWa', 'images/planoFisico7.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('tilemapWa', 'images/planoFisico8.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('super_mario', 'images/super_mario.png',16,16 );
     this.game.load.spritesheet('waluigi', 'images/Waluigisheet15-12.png',56 ,88);
     this.game.load.image('ground', 'images/platform.png');
@@ -113,7 +106,7 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./play_scene.js":3,"uniq":1}],3:[function(require,module,exports){
+},{"./play_scene.js":5}],5:[function(require,module,exports){
 'use strict';
 
 var waluigi;
@@ -128,33 +121,35 @@ var cielo;
 var bandera;
 var bloquesInt;
 
+var Waluigi = require ('./waluigi.js');
+var Goomba = require ('./goomba.js');
+var Dinamico = require ('./dinamico.js');
+var Estatico = require ('./estatico.js');
+
 
 var PlayScene = {
   create: function () {
-    
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('tilemapWa');
     this.map.addTilesetImage('super_mario','super_mario');//
 
     this.cielo = this.map.createLayer(0);
-    this.cielo.resizeWorld();
     //this.cielo.fixedToCamera = true;
-    
+
     this.suelo = this.map.createLayer(1);
-    this.suelo.resize (600,600);
     //this.suelo.debug = true;
     this.map.setCollisionByExclusion([0],true,this.suelo);
-    //this.suelo.resizeWorld();
-    
+    this.suelo.resizeWorld();
 
     this.bloques = this.map.createLayer(2);
     //this.bloques.debug = true;
     this.map.setCollisionByExclusion([0],true,this.bloques);
 
-    this.map.scale = {x:2, y:2};
-    /*this.bloquesInt = this.map.createLayer(3);
+    this.bloquesInt = this.map.createLayer(3);
     this.map.setCollisionByExclusion([0],true,this.bloquesInt);
-    */
+
     cursors = this.game.input.keyboard.createCursorKeys();
 
     waluigi = new Waluigi(this.game, 100, this.game.world.CenterY, 'waluigi', cursors);
@@ -166,11 +161,10 @@ var PlayScene = {
     waluigi.animations.add('entrando',[12, 13, 14,15,16],4,true);
     waluigi.body.gravity.y = 370;
     waluigi.goesRight =true;
-    waluigi.scale.setTo(0.37);
+    waluigi.scale.setTo(0.5);
 
     this.game.camera.follow(waluigi);
-    //this.camera.scale.x = 1.5;
-    //this.camera.scale.y = 1.5;
+    this.game.camera.view
   },
 
   update:  function () {
@@ -218,4 +212,56 @@ var PlayScene = {
 
 module.exports = PlayScene;
 
-},{}]},{},[2]);
+},{"./dinamico.js":1,"./estatico.js":2,"./goomba.js":3,"./waluigi.js":6}],6:[function(require,module,exports){
+'use strict';
+
+
+var Waluigi = function (game, x, y, name, cursors)
+{
+  Phaser.Sprite.call(this, game, x, y, name);
+
+  this.cursors = cursors;
+  this.canJump = true;
+  this.anchor.setTo(0.5, 0.5);
+
+}
+
+Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
+Waluigi.prototype.constructor = Waluigi;
+
+Waluigi.prototype.update = function () {
+
+  if (this.cursors.left.isDown ){
+    this.body.velocity.x = -150;
+    this.animations.play('walkLeft');
+    this.goesRight = false;
+  }
+  else if (this.cursors.right.isDown){
+    this.body.velocity.x = 150;
+    this.animations.play('walkRight');
+    this.goesRight = true;
+  }
+  else {
+    if(this.body.velocity.x > 0)     //derrape derecha
+      this.body.velocity.x -= 10;
+    else if(this.body.velocity.x < 0)//derrape izq
+      this.body.velocity.x += 10;
+    else{}                           //this.body.velocity.x == 0
+    this.animations.stop();
+    if(this.goesRight) this.frame = 0;
+    else this.frame = 6;
+  }
+  if(this.cursors.up.isDown && this.body.onFloor()){
+    this.body.velocity.y = -250;
+    this.animations.stop();
+  }
+
+  if(this.body.velocity.y != 0){
+    if(this.goesRight) this.frame = 5;
+    else this.frame = 11;
+  }
+};
+
+module.exports = Waluigi;
+
+},{}]},{},[4]);
