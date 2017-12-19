@@ -23,7 +23,7 @@ var PlayScene = {
 
     this.cielo = this.map.createLayer(0);
     //this.cielo.fixedToCamera = true;
-    
+
     this.suelo = this.map.createLayer(1);
     //this.suelo.debug = true;
     this.map.setCollisionByExclusion([0],true,this.suelo);
@@ -35,7 +35,7 @@ var PlayScene = {
 
     this.bloquesInt = this.map.createLayer(3);
     this.map.setCollisionByExclusion([0],true,this.bloquesInt);
-    
+
     cursors = this.game.input.keyboard.createCursorKeys();
 
     waluigi = new Waluigi(this.game, 100, this.game.world.CenterY, 'waluigi', cursors);
