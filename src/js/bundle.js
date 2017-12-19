@@ -175,8 +175,8 @@ var PlayScene = {
   },
 
  render: function () {
-       this.game.debug.bodyInfo(waluigi, 32, 32);
-       this.game.debug.body(waluigi);
+      // this.game.debug.bodyInfo(waluigi, 32, 32);
+      // this.game.debug.body(waluigi);
      }
    };
 
