@@ -12,6 +12,11 @@ var cielo;
 var bandera;
 var bloquesInt;
 
+var Waluigi = require ('./waluigi.js');
+var Goomba = require ('./goomba.js');
+var Dinamico = require ('./dinamico.js');
+var Estatico = require ('./estatico.js');
+
 
 var PlayScene = {
   create: function () {

@@ -15,7 +15,7 @@ Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
 Waluigi.prototype.constructor = Waluigi;
 
 Waluigi.prototype.update = function () {
-  
+
   if (this.cursors.left.isDown ){
     this.body.velocity.x = -150;
     this.animations.play('walkLeft');
@@ -40,9 +40,11 @@ Waluigi.prototype.update = function () {
     this.body.velocity.y = -250;
     this.animations.stop();
   }
-  
+
   if(this.body.velocity.y != 0){
     if(this.goesRight) this.frame = 5;
     else this.frame = 11;
   }
 };
+
+module.exports = Waluigi;
