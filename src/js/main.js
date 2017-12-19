@@ -1,6 +1,8 @@
 'use strict';
 
 var PlayScene = require('./play_scene.js');
+var Waluigi = require ('./waluigi.js');
+var Goomba = require ('./goomba.js');
 //
 var unique = require('uniq');
 
@@ -26,7 +28,7 @@ var PreloaderScene = {
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
     //
-    this.game.load.baseURL = 'https://marcolli.github.io/superWaluigi/src/';
+    this.game.load.baseURL = 'https://BrunoMoya.github.io/superWaluigi/src/';
     this.game.load.crossOrigin = 'anonymous';
     // TODO: load here the assets for the game
     this.game.load.tilemap('tilemapWa', 'images/planoFisico7.json', null, Phaser.Tilemap.TILED_JSON);

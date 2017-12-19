@@ -58,9 +58,28 @@ function unique(list, compare, sorted) {
 module.exports = unique
 
 },{}],2:[function(require,module,exports){
+var Goomba = function (game, x, y, name)
+{
+  Phaser.Sprite.call(this, game, x, y, name);
+  this.anchor.setTo(0.5, 0.5);
+
+  this.velocity = -100;
+
+
+  Goomba.prototype = Object.create(Phaser.Sprite.prototype);
+  Goomba.prototype.constructor = Goomba;
+
+  Goomba.prototype.update = function(){
+  this.body.velocity.x = this.velocity * this.scale.x;
+  }
+}
+module.exports = Goomba;
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var PlayScene = require('./play_scene.js');
+var Waluigi = require ('./waluigi.js');
+var Goomba = require ('./goomba.js');
 //
 var unique = require('uniq');
 
@@ -86,7 +105,7 @@ var PreloaderScene = {
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
     //
-    this.game.load.baseURL = 'https://marcolli.github.io/superWaluigi/src/';
+    this.game.load.baseURL = 'https://BrunoMoya.github.io/superWaluigi/src/';
     this.game.load.crossOrigin = 'anonymous';
     // TODO: load here the assets for the game
     this.game.load.tilemap('tilemapWa', 'images/planoFisico7.json', null, Phaser.Tilemap.TILED_JSON);
@@ -113,9 +132,7 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./play_scene.js":3,"uniq":1}],3:[function(require,module,exports){
-'use strict';
-
+},{"./goomba.js":2,"./play_scene.js":4,"./waluigi.js":5,"uniq":1}],4:[function(require,module,exports){
 var waluigi;
 var goombas;
 var platforms;
@@ -218,4 +235,53 @@ var PlayScene = {
 
 module.exports = PlayScene;
 
-},{}]},{},[2]);
+},{}],5:[function(require,module,exports){
+var Waluigi = function (game, x, y, name, cursors)
+{
+  Phaser.Sprite.call(this, game, x, y, name);
+
+  this.cursors = cursors;
+  this.canJump = true;
+  this.anchor.setTo(0.5, 0.5);
+
+
+
+Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
+Waluigi.prototype.constructor = Waluigi;
+
+Waluigi.prototype.update = function () {
+  
+  if (this.cursors.left.isDown ){
+    this.body.velocity.x = -150;
+    this.animations.play('walkLeft');
+    this.goesRight = false;
+  }
+  else if (this.cursors.right.isDown){
+    this.body.velocity.x = 150;
+    this.animations.play('walkRight');
+    this.goesRight = true;
+  }
+  else {
+    if(this.body.velocity.x > 0)     //derrape derecha
+      this.body.velocity.x -= 10;
+    else if(this.body.velocity.x < 0)//derrape izq
+      this.body.velocity.x += 10;
+    else{}                           //this.body.velocity.x == 0
+    this.animations.stop();
+    if(this.goesRight) this.frame = 0;
+    else this.frame = 6;
+  }
+  if(this.cursors.up.isDown && this.body.onFloor()){
+    this.body.velocity.y = -250;
+    this.animations.stop();
+  }
+  
+  if(this.body.velocity.y != 0){
+    if(this.goesRight) this.frame = 5;
+    else this.frame = 11;
+  }
+};
+}
+module.exports = Waluigi;
+
+},{}]},{},[3]);

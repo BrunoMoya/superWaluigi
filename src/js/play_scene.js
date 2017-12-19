@@ -1,5 +1,3 @@
-'use strict';
-
 var waluigi;
 var goombas;
 var platforms;

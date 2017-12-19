@@ -1,6 +1,3 @@
-'use strict';
-
-
 var Waluigi = function (game, x, y, name, cursors)
 {
   Phaser.Sprite.call(this, game, x, y, name);
@@ -9,7 +6,7 @@ var Waluigi = function (game, x, y, name, cursors)
   this.canJump = true;
   this.anchor.setTo(0.5, 0.5);
 
-}
+
 
 Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
 Waluigi.prototype.constructor = Waluigi;
@@ -46,3 +43,5 @@ Waluigi.prototype.update = function () {
     else this.frame = 11;
   }
 };
+}
+module.exports = Waluigi;
