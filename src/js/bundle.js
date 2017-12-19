@@ -82,12 +82,12 @@ var PreloaderScene = {
     this.load.setPreloadSprite(this.loadingBar);
 
     // TODO: load here the assets for the game
-    this.game.load.tilemap('tilemapWa', 'images/planoFisico8.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('super_mario', 'images/super_mario.png',16,16 );
-    this.game.load.spritesheet('waluigi', 'images/Waluigisheet15-12.png',56 ,88);
-    this.game.load.image('ground', 'images/platform.png');
-    this.game.load.image('goomba', 'images/goombat.png');
-    this.game.load.image('wall', 'images/wall.png');
+    this.game.load.tilemap('tilemapWa', '../images/planoFisico8.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('super_mario', '../images/super_mario.png',16,16 );
+    this.game.load.spritesheet('waluigi', '../images/Waluigisheet15-12.png',56 ,88);
+    this.game.load.image('ground', '../images/platform.png');
+    this.game.load.image('goomba', '../images/goombat.png');
+    this.game.load.image('wall', '../images/wall.png');
 
   },
 
