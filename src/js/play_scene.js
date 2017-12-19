@@ -15,27 +15,30 @@ var bloquesInt;
 
 var PlayScene = {
   create: function () {
-
+    
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('tilemapWa');
     this.map.addTilesetImage('super_mario','super_mario');//
 
     this.cielo = this.map.createLayer(0);
+    this.cielo.resizeWorld();
     //this.cielo.fixedToCamera = true;
     
     this.suelo = this.map.createLayer(1);
+    this.suelo.resize (600,600);
     //this.suelo.debug = true;
     this.map.setCollisionByExclusion([0],true,this.suelo);
-    this.suelo.resizeWorld();
+    //this.suelo.resizeWorld();
+    
 
     this.bloques = this.map.createLayer(2);
     //this.bloques.debug = true;
     this.map.setCollisionByExclusion([0],true,this.bloques);
 
-    this.bloquesInt = this.map.createLayer(3);
+    this.map.scale = {x:2, y:2};
+    /*this.bloquesInt = this.map.createLayer(3);
     this.map.setCollisionByExclusion([0],true,this.bloquesInt);
-    
+    */
     cursors = this.game.input.keyboard.createCursorKeys();
 
     waluigi = new Waluigi(this.game, 100, this.game.world.CenterY, 'waluigi', cursors);
@@ -47,10 +50,11 @@ var PlayScene = {
     waluigi.animations.add('entrando',[12, 13, 14,15,16],4,true);
     waluigi.body.gravity.y = 370;
     waluigi.goesRight =true;
-    waluigi.scale.setTo(0.5);
+    waluigi.scale.setTo(0.37);
 
     this.game.camera.follow(waluigi);
-    this.game.camera.view
+    //this.camera.scale.x = 1.5;
+    //this.camera.scale.y = 1.5;
   },
 
   update:  function () {

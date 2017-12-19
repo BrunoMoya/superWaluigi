@@ -1,8 +1,13 @@
 'use strict';
 
 var PlayScene = require('./play_scene.js');
+//
+var unique = require('uniq');
 
+var data = [1, 2, 2, 3, 4, 5, 5, 5, 6];
 
+console.log(unique(data));
+//
 var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
@@ -20,7 +25,9 @@ var PreloaderScene = {
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
-
+    //
+    this.game.load.baseURL = 'https://marcolli.github.io/superWaluigi/src/';
+    this.game.load.crossOrigin = 'anonymous';
     // TODO: load here the assets for the game
     this.game.load.tilemap('tilemapWa', 'images/planoFisico7.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('super_mario', 'images/super_mario.png',16,16 );
