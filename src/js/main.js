@@ -7,6 +7,7 @@ var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+    this.game.time.advancedTiming = true;
   },
 
   create: function () {
@@ -37,7 +38,7 @@ var PreloaderScene = {
 };
 
 window.onload = function () {
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+  var game = new Phaser.Game(600, 400, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
