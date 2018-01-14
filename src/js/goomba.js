@@ -7,6 +7,7 @@ var Goomba = function (game, x, y, velX, velY, name, puntos)
   Dinamico.call(this, game, x, y, velX, velY, name);
 
   this.puntos = puntos;
+  this.active = false;
 }
 
 Goomba.prototype = Object.create(Dinamico.prototype);
@@ -18,10 +19,16 @@ Goomba.prototype.update = function(){
 
 }
 
-Goomba.prototype.muerte = function (game, obj) {
+Goomba.prototype.rebote = function(){
 
-  game.puntos += obj.puntos;
-  obj.kill();
+  this.scale.x = -this.scale.x;
+
+}
+
+Goomba.prototype.muerte = function (puntos) {
+
+  puntos += this.puntos;
+  this.destroy();
 
 }
 

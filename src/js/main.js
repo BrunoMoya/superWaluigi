@@ -26,9 +26,11 @@ var PreloaderScene = {
     this.game.load.tilemap('tilemapWa', 'images/test.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('super_mario', 'images/tilesheet.png',16,16 );
     this.game.load.spritesheet('waluigi', 'images/Waluigisheet15-12.png',56 ,88);
+    this.game.load.spritesheet('general', 'images/tilesheet.png',16 ,16,780, 0, 2 );
     this.game.load.image('ground', 'images/platform.png');
     this.game.load.image('goomba', 'images/goombat.png');
     this.game.load.image('wall', 'images/wall.png');
+    this.game.load.image('wallParticle', 'images/brickparticle.png');
 
   },
 

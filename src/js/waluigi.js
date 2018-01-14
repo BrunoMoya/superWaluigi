@@ -6,6 +6,17 @@ var Waluigi = function (game, x, y, velX, velY, gravity, name, cursors)
 {
   Dinamico.call(this, game, x, y, velX, velY, name);
 
+  game.add.existing(this);
+  game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.collideWorldBounds = true;
+  this.animations.add('walkRight', [0, 1, 2, 3, 4], 10, true);
+  this.animations.add('walkLeft', [6, 7, 8, 9, 10], 10, true);
+  this.animations.add('entrando',[12, 13, 14,15,16],4,true);
+  this.goesRight = true;
+  this.scale.setTo(0.5);
+
+  this.suelo = false;
+  this.plataformas = false;
   this.cursors = cursors;
   this.jumping = false;
   this.canFloat = false;
@@ -13,9 +24,15 @@ var Waluigi = function (game, x, y, velX, velY, gravity, name, cursors)
   this.velX = velX
   this.velY = velY
   this.gravity = gravity;
+  this.body.gravity.y = this.gravity * 2;
+
+  this.zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+
+  game.input.keyboard.addKeyCapture([ Phaser.Keyboard.Z, Phaser.Keyboard.UP ]);
 }
 
-Waluigi.prototype = Object.create(Phaser.Sprite.prototype);
+Waluigi.prototype = Object.create(Dinamico.prototype);
 Waluigi.prototype.constructor = Waluigi;
 
 Waluigi.prototype.update = function () {
@@ -23,13 +40,14 @@ Waluigi.prototype.update = function () {
 var deltaTime = (this.game.time.elapsedMS * this.game.time.fps)/1000;
 
 this.body.gravity.y = this.gravity * 2;
+Waluigi.prototype.suelo(this);
 
   if (this.cursors.left.isDown){
     if(this.body.velocity.x > -this.velX)
     {
       if(this.body.velocity.x < 0)
       {
-        if(this.body.onFloor())
+        if((this.suelo || this.plataformas))
         {
           if(this.body.velocity.x > -this.velX/4)
           {
@@ -60,7 +78,7 @@ this.body.gravity.y = this.gravity * 2;
       }
       else
       {
-        if(this.body.onFloor())
+        if((this.suelo || this.plataformas))
         {
           this.body.velocity.x -= 8.5 * deltaTime;
           if(this.body.velocity.x > this.velX)
@@ -72,7 +90,7 @@ this.body.gravity.y = this.gravity * 2;
     }
     else if (this.game.input.keyboard.isDown(Phaser.Keyboard.X) && this.body.velocity.x > -this.velX * 7/3)
     {
-      if(this.body.onFloor())
+      if((this.suelo || this.plataformas))
       {
         if(this.body.velocity.x > -this.velX/4)
         {
@@ -106,7 +124,7 @@ this.body.gravity.y = this.gravity * 2;
     {
       if(this.body.velocity.x > 0)
       {
-        if(this.body.onFloor())
+        if((this.suelo || this.plataformas))
         {
           if(this.body.velocity.x < this.velX/4)
           {
@@ -136,7 +154,7 @@ this.body.gravity.y = this.gravity * 2;
         }
       }
       else {
-        if(this.body.onFloor())
+        if((this.suelo || this.plataformas))
         {
           this.body.velocity.x += 8.5 * deltaTime;
           if(this.body.velocity.x < -this.velX)
@@ -149,7 +167,7 @@ this.body.gravity.y = this.gravity * 2;
 
     else if (this.game.input.keyboard.isDown(Phaser.Keyboard.X) && this.body.velocity.x < this.velX * 7/3)
     {
-      if(this.body.onFloor())
+      if((this.suelo || this.plataformas))
       {
         if(this.body.velocity.x < this.velX/4)
         {
@@ -179,7 +197,7 @@ this.body.gravity.y = this.gravity * 2;
   }
 
   else {
-    if(this.body.onFloor())
+    if((this.suelo || this.plataformas))
     {
       if(this.body.velocity.x > 0)
       {     //derrape derecha
@@ -203,7 +221,7 @@ this.body.gravity.y = this.gravity * 2;
   }
 }
 
-  if(this.body.onFloor())
+  if((this.suelo || this.plataformas))
   {
     this.jumping = false;
     this.canFloat = false;
@@ -211,9 +229,10 @@ this.body.gravity.y = this.gravity * 2;
 
   if(this.cursors.up.isDown || this.game.input.keyboard.isDown(Phaser.Keyboard.Z))
   {
-    if(!this.jumping && this.body.onFloor())
+    if(!this.jumping && ((this.suelo || this.plataformas)))
     {
         this.body.velocity.y = -this.velY;
+        this.plataformas = false;
         this.jumping = true;
         this.canFloat = true;
         this.animations.stop();
@@ -233,10 +252,40 @@ this.body.gravity.y = this.gravity * 2;
   }
 };
 
-Waluigi.prototype.rebound = function (waluigi) {
+Waluigi.prototype.rebound = function () {
 
-waluigi.body.velocity.y = waluigi.velY/3;
+if(this.zKey.downDuration(500) || this.upKey.downDuration(500))
+{
+  this.body.velocity.y -= 550;
+  console.log('salto');
+}
 
+else {
+  this.body.velocity.y -= 400;
+  }
+}
+
+Waluigi.prototype.breakhit = function () {
+
+  this.body.velocity.y += 30;
+
+}
+
+Waluigi.prototype.suelo = function(obj){
+
+if(obj.body.onFloor())
+  obj.suelo = true;
+else
+  obj.suelo = false;
+
+}
+
+Waluigi.prototype.plataforma = function(){
+  this.plataformas = true;
+}
+
+Waluigi.prototype.noPlataforma = function(){
+  this.plataformas = false;
 }
 
 module.exports = Waluigi;
