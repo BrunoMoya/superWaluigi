@@ -2,25 +2,28 @@
 
 var puntos;
 var muro;
-var waluigi;
-var goombas;
 var platforms;
 var cursors;
 var canJump;
 var map;
 var suelo;
-var bloques;
 var ladrillos;
 var cielo;
 var bandera;
 var bloquesInt;
 var maxCamera;
 
+var waluigi;
+var bloques;
+var goombas;
+var monedas;
+
 var Waluigi = require ('./waluigi.js');
 var Goomba = require ('./goomba.js');
 var Dinamico = require ('./dinamico.js');
 var Estatico = require ('./estatico.js');
 var BloqueLadrillos = require ('./bloqueladrillos.js');
+var Coin = require ('./coin.js');
 
 var PlayScene = {
   create: function () {
@@ -54,7 +57,6 @@ var PlayScene = {
 
     waluigi = new Waluigi(this.game, iniX, iniY, 150, 250, 640, 'waluigi', cursors);
 
-
     goombas = this.game.add.group();
 
     for (var i = 0; i < 3; i++)
@@ -68,6 +70,7 @@ var PlayScene = {
     }
 
     creaBloques(this.game);
+    creaMonedas(this.game);
 
     maxCamera = 0;
     this.game.camera.view
@@ -139,6 +142,13 @@ var PlayScene = {
               }, null, this);
 
           });
+
+          monedas.forEach(item => {
+
+            if(checkOverlap(waluigi, item))
+              item.taken();
+          });
+
    }
 
    var cameraLogic = function(game, wall)
@@ -179,6 +189,21 @@ var PlayScene = {
      }
    }
 
+   var creaMonedas = function(game)
+   {
+     if(map.objects.coins)
+     {
+       monedas = game.add.group();
+
+       var objetos = map.objects.coins;
+       objetos.forEach(item => {
+         var coin = new Coin(game, item.x, item.y, 'general');
+         game.physics.enable(coin, Phaser.Physics.ARCADE);
+         monedas.add(coin);
+       })
+     }
+   }
+
    var compruebaBloque = function (waluigi, bloque, puntos)
    {
      if(waluigi.body.touching.up && bloque.body.touching.down)
@@ -193,5 +218,13 @@ var PlayScene = {
       else
         waluigi.noPlataforma();
    }
+
+   var checkOverlap = function (objA, objB) {
+
+    var boundsA = objA.getBounds();
+    var boundsB = objB.getBounds();
+
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
+}
 
 module.exports = PlayScene;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-up" width="100" height="25" tilewidth="16" tileheight="16" nextobjectid="10">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-up" width="100" height="25" tilewidth="16" tileheight="16" nextobjectid="22">
  <tileset firstgid="1" name="Tilesheet" tilewidth="16" tileheight="16" spacing="2" tilecount="780" columns="26">
   <image source="Tilesheet.png" width="476" height="539"/>
  </tileset>
@@ -19,6 +19,14 @@
     <property name="type" value="spawn"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="coins">
+  <object id="11" gid="191" x="256" y="256" width="16" height="16"/>
+  <object id="13" gid="191" x="272" y="256" width="16" height="16"/>
+  <object id="14" gid="191" x="288" y="256" width="16" height="16"/>
+  <object id="19" gid="191" x="353" y="193" width="16" height="16"/>
+  <object id="20" gid="191" x="369" y="193" width="16" height="16"/>
+  <object id="21" gid="191" x="337" y="193" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="bloques">
   <object id="7" gid="1" x="224" y="272" width="16" height="16">
